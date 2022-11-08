@@ -1,0 +1,214 @@
+package org.example
+
+import scala.io.StdIn.readLine
+import scala.math.BigDecimal.RoundingMode.HALF_UP
+import scala.math.BigDecimal.double2bigDecimal
+
+//import scala.sys.process.processInternal.processDebug.&&
+
+/** student Komarova Antonina */
+
+
+/**
+a.    Напишите программу, которая:
+
+
+  i.     выводит фразу «Hello, Scala!» справа налево
+
+  ii.     переводит всю фразу в нижний регистр
+
+  iii.     удаляет символ!
+
+  iv.     добавляет в конец фразы «and goodbye python!» */
+
+object  App {
+
+  def main(args: Array[String]) {
+    var x = "Hello, World!"
+    println(x)
+    println(x.reverse)
+    println(x.toLowerCase())
+    println(x.replace( "!", "") + " and goodbye python!")
+
+  }
+}
+
+/** b.Напишите программу, которая вычисляет ежемесячный оклад сотрудника после
+ * вычета налогов. На вход вашей программе подается значение годового дохода до вычета
+ * налогов, размер премии – в процентах от годового дохода и компенсация питания.
+
+ */
+
+object  App_2 {
+
+  def main(args: Array[String])  {
+    println("Введите годовой доход:")
+    val salary = readLine().toFloat
+    println("Введите размер премии в %:")
+    val bonus = readLine().toFloat
+    println("Введите размер компенсации питания:")
+    val eatBonus = readLine().toFloat
+
+    val itog = ((salary+eatBonus)*(1+bonus/100))*0.87
+    println("Итоговый доход после вычета налогов:"+ itog.setScale(2, HALF_UP))
+    }
+  }
+
+/** с. Напишите программу, которая рассчитывает для каждого сотрудника отклонение(в процентах)
+ * от среднего значения оклада на уровень всего отдела. В итоговом значении должно
+ * учитываться в большую или меньшую сторону отклоняется размер оклада.
+На вход вышей программе подаются все значения, аналогичные предыдущей программе,
+а также список со значениями окладов сотрудников отдела 100, 150, 200, 80, 120, 75. */
+
+object App_3 {
+
+  def main(args: Array[String]) {
+
+    var salaryList = List[Float](100, 150, 200, 80, 120, 75)
+    var mid_salary = List[Float]()
+
+  for (i <- salaryList)
+    {
+      if ((i >= 100)&&(i < 200))
+        {
+          mid_salary = (i +: mid_salary)
+        }
+    }
+  println("Средние сотрудники: " + mid_salary)
+
+  var avg_mid_salary: BigDecimal  = (salaryList.sum/salaryList.size).setScale(3, HALF_UP)
+  println("Средняя зарплата по отделу: " + avg_mid_salary)
+
+  var difference = List[Any]()
+  var new_salary_List = List[Float]()
+  for (i <- salaryList) {
+    difference = (((i-avg_mid_salary)*100/avg_mid_salary).setScale(3, HALF_UP) +: difference)
+      }
+  println("Отклонение(в процентах) от среднего значения оклада для каждого сотрудника: "  + difference)
+  }
+ }
+
+/** d. Попробуйте рассчитать новую зарплату сотрудника, добавив(или отняв, если сотрудник
+ *  плохо себя вел) необходимую сумму с учетом результатов прошлого задания.
+ * Добавьте его зарплату в список и вычислите значение самой высокой зарплаты и самой низкой. */
+/**  Также в вашу команду пришли два специалиста с окладами 350 и 90 тысяч рублей.
+    Попробуйте отсортировать список сотрудников по уровню оклада от меньшего к большему.
+ вычислите значение самой высокой зарплаты и самой низкой зарплаты. */
+
+object App_4 {
+
+  def main(args: Array[String]) {
+
+    var salaryList = List(100, 150, 200, 80, 120, 75)
+    val s_1 = 350
+    val s_2 = 90
+    salaryList = (s_1 +: salaryList)
+    salaryList = (s_2 +: salaryList)
+
+    println("Отсортированные зарплаты: " + salaryList.sorted)
+    println("Минимальная зарплата: " + salaryList.min)
+    println("Максимальная зарплата: " + salaryList.max)
+
+    /**  Кажется, вы взяли в вашу команду еще одного сотрудника и предложили ему оклад 130 тысяч.
+     * Вычислите самостоятельно номер сотрудника в списке так, чтобы сортировка не нарушилась
+     * и добавьте его на это место. */
+
+    val s_3 = 130
+
+    salaryList = (s_3 +: salaryList)
+    salaryList = salaryList.sorted
+    println(salaryList)
+
+    //salaryList = salaryList.insert(s_3, 5)
+ 1
+/** g.Попробуйте вывести номера сотрудников из полученного списка,
+ * которые попадают под категорию middle.
+ * На входе программе подается «вилка» зарплаты специалистов уровня middle. */
+
+    var new_mid_salary = List[Int]()
+
+    for (i <- salaryList) {
+      if ((i >= 100) && (i < 200)) {
+        new_mid_salary = (i +: new_mid_salary)
+        println(salaryList.indexOf(i)+" middle")
+      }
+    }
+    println("Средние сотрудники: " + new_mid_salary)
+
+    var avg_mid_salary = (salaryList.sum / salaryList.size).toFloat
+    println("Средняя зарплата по отделу: " + avg_mid_salary)
+
+
+/** Однако наступил кризис и ваши сотрудники требуют повысить зарплату.
+ * Вам необходимо проиндексировать зарплату каждого сотрудника на уровень инфляции – 7%. */
+
+    var salary_List_2 = List[Any]()
+    var percentage: Double =  1.07
+    for (i <- salaryList) {
+
+      salary_List_2 = ((i*percentage).setScale(2, HALF_UP) +: salary_List_2)
+
+    }
+    println("ЗП после  индексации: " + salary_List_2)
+
+/** k.      *Попробуйте деанонимизировать ваших сотрудников – составьте структуру,
+ * которая позволит иметь знания о том, сколько зарабатывает каждый сотрудник(Фамилия и имя). */
+
+
+    var maxSalary = 0
+    var minSalary = 3200000
+    var workerMaxSel = ""
+    var workerMinSel = ""
+    val workersSalMap = Map(
+      "Komarov" -> 150,
+      "Inakov" -> 200,
+      "Utnov" -> 130,
+      "Kim" -> 120,
+      "Panova" -> 100
+    )
+
+    /** l. Выведите фамилию и имя сотрудников с самой высокой и самой
+     низкой зарплатой(только не рассказывайте им об этом факте).   */
+
+  for ((i, j) <- workersSalMap)
+      {
+        if (j>maxSalary)
+      {
+        maxSalary = j
+        workerMaxSel = i
+      }
+      }
+  println("Самая высокая ЗП у: " + workerMaxSel)
+
+    for ((i, j) <- workersSalMap) {
+      if (j < minSalary) {
+        minSalary = j
+        workerMinSel = i
+      }
+    }
+    println("Самая низкая ЗП у: " + workerMinSel)
+
+  }
+}
+
+
+/** o. Попробуйте написать функцию, которая вычисляет значение степени двойки:
+  i. С помощью обычной рекурсии */
+
+
+object App_5 {
+
+  def main(args: Array[String]): Unit = {
+
+    def powerOfTwo(n: Int): Int = {
+      if (n <= 0) 1
+      else
+      {
+        var powerTwo = 2 * powerOfTwo(n - 1)
+        powerTwo
+      }
+    }
+    println(powerOfTwo(10))
+  }
+}
+
